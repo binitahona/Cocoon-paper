@@ -1,0 +1,71 @@
+############################
+# B. Hona, July 28, 2020  #
+############################
+
+This are the steps to follow to reproduce the results from the "HAWC Cocoon" paper:
+
+1) 3ML and HAL installation:
+# 3ML is a multi-wavelength/multi-messenger analysis framework that provides a
+# unified interface to software from many different instruments. It is 
+# available as open-source code under: https://github.com/giacomov/3ML . 
+# HAL (HAWC Accelerated Likelihood - python-only framework for HAWC data analysis. It is available as open source code under: https://github.com/threeML/hawc_hal.
+# Both frameworks can be installed via conda:
+
+# Install miniconda
+curl https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh  > Miniconda3-latest.sh
+
+# This will install conda in ~/miniconda . If you want to put it somewhere else change accordingly these 3 lines
+bash Miniconda3-latest.sh -p ${MINICONDA_PATH}/ -b
+export PATH=${MINICONDA_PATH}/bin:$PATH
+
+
+# Install all the needed framework via
+install_from_conda.sh
+
+# Activate environment
+From a clean shell, use `source ~/init_conda_hawc.sh` to activate the hawc_analysis enviroment 
+----------------------------------------------------------------------------------
+1) Reproduce the fit results for the HAWC Cocoon:
+# After activating the hawc_analysis environment, run the 3ML script in the '3ML_fit' directory 
+python 3ml_fit.py -m maptree.root -r response.root
+
+----------------------------------------------------------------------------------
+2) Reproduce the fit results for the HAWC Cocoon:
+
+----------------------------------------------------------------------------------
+3) Reproduce the hadronic distribution and leptonic distribution in Fig.2(left):
+# For the fit results of steady case scenario
+python hadronic/steady.py
+# For the fit results of burst case scenario
+python hadronic/burst.py 
+# Plotting expected gamma-ray distribution from the hadronic fit results
+# For the fit results of leptonic scenario
+python leptonic/electron_description.py
+
+----------------------------------------------------------------------------------
+4) Reproduce the cosmic-ray profile plot in Fig.2(right), inside cr_profile directory:
+#Produce a model of the four rings centered at the OB2 association
+python ring.py
+#Using the model file obtained from ring.py, fit the rings and other sources using 3ML
+python ring_model_fit.py
+# Obtain the integrated flux for each ring from the fits file saved from 3ml fit
+python flux.py
+#Calculate cosmic-ray profile using eq 5 and plot Fig. 2
+python plot_cr_profile.py
+ 
+----------------------------------------------------------------------------------
+5) Reproduce the systematic uncertainties for the Cocoon spectrum:
+# Systematic uncertainties due to detector effects
+
+# Systematic uncertainties due to Galactic diffuse emission plus unresolved sources
+
+
+#################################################
+If you have question you can reach us by email:
+bhona@mtu.edu
+hfleisch@mtu.edu 
+kefang@stanford.edu
+rdb3@stanford.edu 
+sabrinacasanova@gmail.com 
+petra@mtu.edu 
+#################################################
