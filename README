@@ -7,7 +7,7 @@ This are the steps to follow to reproduce the results from the "HAWC Cocoon" pap
 1) 3ML and HAL installation:
 # 3ML is a multi-wavelength/multi-messenger analysis framework that provides a
 # unified interface to software from many different instruments. It is 
-# available as open-source code under: https://github.com/giacomov/3ML . 
+# available as open-source code under: https://github.com/threeML/threeML . 
 # HAL (HAWC Accelerated Likelihood - python-only framework for HAWC data analysis. It is available as open source code under: https://github.com/threeML/hawc_hal.
 # Both frameworks can be installed via conda:
 
@@ -56,9 +56,16 @@ python plot_cr_profile.py
 ----------------------------------------------------------------------------------
 5) Reproduce the systematic uncertainties for the Cocoon spectrum:
 # Systematic uncertainties due to detector effects
+# To load the different detector systematics results:
+python reload_results-from-fits.py
 
-# Systematic uncertainties due to Galactic diffuse emission plus unresolved sources
+# Systematic uncertainties due to various effects:
+# (These scripts require data file (use -m option) and response file (use -r option) provided in this repository)
+python gde_unresolved_background.py #to calculate systematics uncertainties due to Galactic diffuse emission and unresolved sources
 
+python uniform_background.py # to calculate systematics uncertainties due to larger than ROI uniform background
+
+python larger_roi.py #to calculate systematics uncertainties from the larger ROI
 
 #################################################
 If you have question you can reach us by email:
