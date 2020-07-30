@@ -31,7 +31,7 @@ python 3ml_fit.py
 
 ----------------------------------------------------------------------------------
 2) Reproduce the Significance maps:
-
+#Significance maps are in the FITS format in the maps directory. To display the FITS files, a list of viewers is available at https://fits.gsfc.nasa.gov/fits_viewer.html
 ----------------------------------------------------------------------------------
 3) Reproduce the hadronic distribution and leptonic distribution in Fig.2(left):
 # For the fit results of steady case scenario
