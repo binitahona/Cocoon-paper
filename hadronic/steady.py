@@ -25,10 +25,6 @@ with warnings.catch_warnings():
     from threeML import *
 
 
-# Make sure that the HAWC plugin is available
-
-assert is_plugin_available("HAWCLike"), "HAWCLike is not available. Check your configuration"
-
 maptree = ... # maptree.hdf5 file
 response = ... #  response.hdf5 file
 roi = ..#Region of interest, roi.fits file
