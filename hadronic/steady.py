@@ -29,119 +29,98 @@ with warnings.catch_warnings():
 
 assert is_plugin_available("HAWCLike"), "HAWCLike is not available. Check your configuration"
 
-def go(args):
-    lm = load_model("cocoon.yml")
+maptree = ... # maptree.hdf5 file
+response = ... #  response.hdf5 file
+roi = ..#Region of interest, roi.fits file
+
+lm = load_model("cocoon.yml")
 
 
-    fluxUnit = 1. / (u.TeV * u.cm**2 * u.s)
-    E = np.logspace(np.log10(1), np.log10(100), 100) * u.TeV
+fluxUnit = 1. / (u.TeV * u.cm**2 * u.s)
+E = np.logspace(np.log10(1), np.log10(100), 100) * u.TeV
 
-    spectrumPP_BPL = cutoff_pp()
+spectrumPP_BPL = cutoff_pp()
 
-    shapeD = Gaussian_on_sphere()
+shapeD = Gaussian_on_sphere()
 
-    hawcRA = 307.65
-    hawcDec = 40.93
+hawcRA = 307.65
+hawcDec = 40.93
 
-    from astromodels.core.sky_direction import SkyDirection
-    position = SkyDirection(hawcRA, hawcDec)
+from astromodels.core.sky_direction import SkyDirection
+position = SkyDirection(hawcRA, hawcDec)
 
-    sourceCutP = ExtendedSource("cocoon_PP_BPL", spatial_shape=shapeD, spectral_shape=spectrumPP_BPL)
-
-
-    # NOTE: if you use units, you have to set up the values for the parameters
-    # AFTER you create the source, because during creation the function Log_parabola
-    # gets its units
+sourceCutP = ExtendedSource("cocoon_PP_BPL", spatial_shape=shapeD, spectral_shape=spectrumPP_BPL)
 
 
-    shapeD.lon0=hawcRA*u.degree
-    shapeD.lat0=hawcDec*u.degree
-    shapeD.lon0.fix=True
-    shapeD.lat0.fix=True
+# NOTE: if you use units, you have to set up the values for the parameters
 
-    shapeD.sigma = 2*u.degree
-    shapeD.sigma.fix = True
-    shapeD.sigma.bounds = (0.2,2.0)*u.degree
+shapeD.lon0=hawcRA*u.degree
+shapeD.lat0=hawcDec*u.degree
+shapeD.lon0.fix=True
+shapeD.lat0.fix=True
 
-
-    s = spectrumPP_BPL
-
-   
-    s.Q_inj_index = 2.14
-    s.Q_inj_index.fix = False
-    s.Q_inj_index.bounds = (0, 4)
-  
-    s.E_inj_max = 300e12
-    s.E_inj_max.fix = True
-    #s.E_inj_max.bounds = (1e10, 1e18)
-
-    s.k = 0.00017
-    s.k.fix = False
-    #s.k.bounds = (5, 200)
-
-    lm.add_source(sourceCutP)
+shapeD.sigma = 2*u.degree
+shapeD.sigma.fix = True
+shapeD.sigma.bounds = (0.2,2.0)*u.degree
 
 
-    bin_list  =  "1c 1d 1e 1f 2c 2d 2e 2f 3c 3d 3e 3f 4c 4d 4e 4f 4g 5e 5f 5g 5h 6e 6f 6g 6h 7f 7g 7h 7i 8g 8h 8i 8j 9g 9h 9i 9j 9k 9l".split()
-
-    ra, dec = 307.17, 41.17
-    #data_radius = 6.0
-    model_radius = 8.0
+s = spectrumPP_BPL
 
 
-    fits_roi = HealpixMapROI(ra = ra, dec = dec, model_radius=model_radius, roifile="/data/scratch/userspace/bhona/hal/new_roi.fits")
-    hawc = HAL("HAWC", args.mtfile, args.rsfile,fits_roi)
-    hawc.set_active_measurements(bin_list=bin_list)
-    #hawc.display()
+s.Q_inj_index = 2.14
+s.Q_inj_index.fix = False
+s.Q_inj_index.bounds = (0, 4)
+
+s.E_inj_max = 300e12
+s.E_inj_max.fix = True
+#s.E_inj_max.bounds = (1e10, 1e18)
+
+s.k = 0.00017
+s.k.fix = False
+#s.k.bounds = (5, 200)
+
+lm.add_source(sourceCutP)
 
 
-    fluxkeV = u.cm**-2 / u.keV / u.s
+bin_list  =  "1c 1d 1e 1f 2c 2d 2e 2f 3c 3d 3e 3f 4c 4d 4e 4f 4g 5e 5f 5g 5h 6e 6f 6g 6h 7f 7g 7h 7i 8g 8h 8i 8j 9g 9h 9i 9j 9k 9l".split()
+
+ra, dec = 307.17, 41.17
+#data_radius = 6.0
+model_radius = 8.0
 
 
-    x = [2.00e+06, 6.50e+06, 2.00e+07, 1.65e+08] *  u.keV
-    y = [(0.12693143, 0.10115737, 0.09976892, 0.07046372)] /(x*x) * fluxkeV
-    yerr = [(0.00342492, 0.00392419, 0.00555574, 0.00763732)] /(x*x)  * fluxkeV
+fits_roi = HealpixMapROI(ra = ra, dec = dec, model_radius=model_radius, roifile=roi)
+hawc = HAL("HAWC", maptree, response,fits_roi)
+hawc.set_active_measurements(bin_list=bin_list)
+#hawc.display()
 
 
-    #x = [2.00e+06, 6.50e+06, 2.00e+07, 1.65e+08] *  u.keV
-    #y = [(0.12693143, 0.10115737, 0.09976892, 0.07046372)] /(x*x) * fluxkeV
-    #yerr = [(0.00342492, 0.00392419, 0.00555574, 0.00763732)] /(x*x)  * fluxkeV
-
-    likeXY = UnresolvedExtendedXYLike("likeXY", x, y, yerr,  poisson_data=False, quiet=False, source_name="cocoon_PP_BPL")
-
-    # Double check the free parameters
-    print("Likelihood model:\n")
-    print(lm)
+fluxkeV = u.cm**-2 / u.keV / u.s
 
 
-    # Set up the likelihood and run the fit
-    print("Performing likelihood fit...\n")
-    datalist = DataList(hawc, likeXY)
-    jl = JointLikelihood(lm, datalist, verbose=True)
-    jl.set_minimizer("ROOT")
-    param_df, like_df = jl.fit()
-
-    # See the model in counts space and the residuals
-    #fig = hawc.display_spectrum()
-    # Save it to file
-    #fig.savefig("plots/cutoff_residuals_pwnfree_templateroi.png")
-
-    # Look at the different energy planes (the columns are model, data, residuals)
-
-    jl.results.write_to("cutoff_tau3Myr.fits", overwrite=True)
-    lm.save("gp_proton_cutoff.yml", overwrite=True)
+x = [2.00e+06, 6.50e+06, 2.00e+07, 1.65e+08] *  u.keV
+y = [(0.12693143, 0.10115737, 0.09976892, 0.07046372)] /(x*x) * fluxkeV
+yerr = [(0.00342492, 0.00392419, 0.00555574, 0.00763732)] /(x*x)  * fluxkeV
 
 
-if __name__=="__main__":
+#x = [2.00e+06, 6.50e+06, 2.00e+07, 1.65e+08] *  u.keV
+#y = [(0.12693143, 0.10115737, 0.09976892, 0.07046372)] /(x*x) * fluxkeV
+#yerr = [(0.00342492, 0.00392419, 0.00555574, 0.00763732)] /(x*x)  * fluxkeV
 
-    import argparse
+likeXY = UnresolvedExtendedXYLike("likeXY", x, y, yerr,  poisson_data=False, quiet=False, source_name="cocoon_PP_BPL")
 
-    p = argparse.ArgumentParser(description="Example spectral fit with LiFF")
-    p.add_argument("-m", "--maptreefile", dest="mtfile",
-                   help="LiFF MapTree ROOT file", required=True)
-    p.add_argument("-r", "--responsefile", dest="rsfile",
-                   help="LiFF detector response ROOT file", required=True)
-    args = p.parse_args()
+# Double check the free parameters
+print("Likelihood model:\n")
+print(lm)
 
-    go(args)
 
+# Set up the likelihood and run the fit
+print("Performing likelihood fit...\n")
+datalist = DataList(hawc, likeXY)
+jl = JointLikelihood(lm, datalist, verbose=True)
+jl.set_minimizer("ROOT")
+param_df, like_df = jl.fit()
+
+
+jl.results.write_to("cutoff_tau3Myr.fits", overwrite=True)
+lm.save("gp_proton_cutoff.yml", overwrite=True)

@@ -25,234 +25,221 @@ with warnings.catch_warnings():
 
 assert is_plugin_available("HAWCLike"), "HAWCLike is not available. Check your configuration"
 
-def go(args):
-    spectrum0 = Powerlaw()
-    shape0    = Latitude_galactic_diffuse()
+maptree = ... # maptree.hdf5 file
+response = ... #  response.hdf5 file
 
-    source0   = ExtendedSource("GDE",
-                              spatial_shape=shape0,
-                              spectral_shape=spectrum0)
+spectrum0 = Powerlaw()
+shape0    = Latitude_galactic_diffuse()
 
-    fluxUnit = 1. / (u.TeV * u.cm**2 * u.s)
+source0   = ExtendedSource("GDE",
+                          spatial_shape=shape0,
+                          spectral_shape=spectrum0)
 
-    # Set spectral parameters (do it after the source definition to make sure
-    # the units are handled correctly)
-    spectrum0.K = 1e-12 * fluxUnit
-    spectrum0.K.fix = False
-    spectrum0.K.bounds = (1e-16 * fluxUnit, 1e-8*fluxUnit)
+fluxUnit = 1. / (u.TeV * u.cm**2 * u.s)
 
-    spectrum0.piv = 7 * u.TeV
-    spectrum0.piv.fix = True
+# Set spectral parameters (do it after the source definition to make sure
+# the units are handled correctly)
+spectrum0.K = 1e-12 * fluxUnit
+spectrum0.K.fix = False
+spectrum0.K.bounds = (1e-16 * fluxUnit, 1e-8*fluxUnit)
 
-    spectrum0.index = -2.75
-    spectrum0.index.fix = False
-    spectrum0.index.bounds = (-5., -1.)
+spectrum0.piv = 7 * u.TeV
+spectrum0.piv.fix = True
 
-    # Set spatial parameters (do it after the source definition to make sure
-    # the units are handled correctly)
-    shape0.K = 1.0
-    shape0.K.fix = True
+spectrum0.index = -2.75
+spectrum0.index.fix = False
+spectrum0.index.bounds = (-5., -1.)
 
-    shape0.sigma_b = 1 * u.degree
-    shape0.sigma_b.fix = True
-    shape0.sigma_b.bounds = (0, 2) * u.degree
-    #shape0.sigma_b.max_value = 2
-    #shape0.sigma_b.min_value = -1.
+# Set spatial parameters (do it after the source definition to make sure
+# the units are handled correctly)
+shape0.K = 1.0
+shape0.K.fix = True
 
-    shape0.l_min =  73 * u.degree
-    shape0.l_min.fix = True
+shape0.sigma_b = 1 * u.degree
+shape0.sigma_b.fix = True
+shape0.sigma_b.bounds = (0, 2) * u.degree
+#shape0.sigma_b.max_value = 2
+#shape0.sigma_b.min_value = -1.
 
-    shape0.l_max = 86 * u.degree
-    shape0.l_max.fix = True
+shape0.l_min =  73 * u.degree
+shape0.l_min.fix = True
 
+shape0.l_max = 86 * u.degree
+shape0.l_max.fix = True
 
 
-    spectrum = Cutoff_powerlaw()
-    shape    = Gaussian_on_sphere()
 
-    source   = ExtendedSource("veritasellipse",
-                              spatial_shape=shape,
-                              spectral_shape=spectrum)
+spectrum = Cutoff_powerlaw()
+shape    = Gaussian_on_sphere()
 
-    fluxUnit = 1. / (u.TeV * u.cm**2 * u.s)
+source   = ExtendedSource("veritasellipse",
+                          spatial_shape=shape,
+                          spectral_shape=spectrum)
 
-    # Set spectral parameters (do it after the source definition to make sure
-    # the units are handled correctly)
-    spectrum.K = 2.05e-13 * fluxUnit
-    spectrum.K.fix = False
-    spectrum.K.bounds = (1e-16 * fluxUnit, 1e-10*fluxUnit)
+fluxUnit = 1. / (u.TeV * u.cm**2 * u.s)
 
-    spectrum.piv = 4.9 * u.TeV
-    spectrum.piv.fix = True
+# Set spectral parameters (do it after the source definition to make sure
+# the units are handled correctly)
+spectrum.K = 2.05e-13 * fluxUnit
+spectrum.K.fix = False
+spectrum.K.bounds = (1e-16 * fluxUnit, 1e-10*fluxUnit)
 
+spectrum.piv = 4.9 * u.TeV
+spectrum.piv.fix = True
 
-    spectrum.index = -2.03
-    spectrum.index.fix = False
-    spectrum.index.bounds = (-4., 0.)
 
-    spectrum.xc = 20 * u.TeV
-    spectrum.xc.fix = False
-    spectrum.xc.bounds = (1 * u.TeV, 400 * u.TeV)
+spectrum.index = -2.03
+spectrum.index.fix = False
+spectrum.index.bounds = (-4., 0.)
 
+spectrum.xc = 20 * u.TeV
+spectrum.xc.fix = False
+spectrum.xc.bounds = (1 * u.TeV, 400 * u.TeV)
 
 
-    # Set spatial parameters (do it after the source definition to make sure
-    # the units are handled correctly)
-    shape.lon0 = 307.89 * u.degree
-    shape.lon0.fix = True
 
-    shape.lat0 = 41.58 * u.degree
-    shape.lat0.fix = True
+# Set spatial parameters (do it after the source definition to make sure
+# the units are handled correctly)
+shape.lon0 = 307.89 * u.degree
+shape.lon0.fix = True
 
-    shape.sigma = 0.27 * u.degree
-    shape.sigma.fix = True
-    #shape.sigma.bounds = (0.1 *u.degree, 2*u.degree)
-    shape.sigma.max_value = 0.27 * u.degree
+shape.lat0 = 41.58 * u.degree
+shape.lat0.fix = True
 
+shape.sigma = 0.27 * u.degree
+shape.sigma.fix = True
+#shape.sigma.bounds = (0.1 *u.degree, 2*u.degree)
+shape.sigma.max_value = 0.27 * u.degree
 
-    spectrum3 = Powerlaw()
-    shape3    = Gaussian_on_sphere()
 
-    source3   = ExtendedSource("HAWCcocoon",
-                              spatial_shape=shape3,
-                              spectral_shape=spectrum3)
+spectrum3 = Powerlaw()
+shape3    = Gaussian_on_sphere()
 
-    fluxUnit = 1. / (u.TeV * u.cm**2 * u.s)
+source3   = ExtendedSource("HAWCcocoon",
+                          spatial_shape=shape3,
+                          spectral_shape=spectrum3)
 
-    # Set spectral parameters (do it after the source definition to make sure
-    # the units are handled correctly)
-    #factor3 = (10.5/7.0)**(-3) #correction factor as flux limits depend on pivot energy and the original limits were determined for 7 TeV
-    spectrum3.K = 3.5e-13 * fluxUnit
-    spectrum3.K.fix = False
-    spectrum3.K.bounds = (1e-16 * fluxUnit, 1e-10 * fluxUnit)
-    #spectrum3.K.set_uninformative_prior(Log_uniform_prior)    
+fluxUnit = 1. / (u.TeV * u.cm**2 * u.s)
 
-    spectrum3.piv = 4.2 * u.TeV
-    spectrum3.piv.fix = True
+# Set spectral parameters (do it after the source definition to make sure
+# the units are handled correctly)
+#factor3 = (10.5/7.0)**(-3) #correction factor as flux limits depend on pivot energy and the original limits were determined for 7 TeV
+spectrum3.K = 3.5e-13 * fluxUnit
+spectrum3.K.fix = False
+spectrum3.K.bounds = (1e-16 * fluxUnit, 1e-10 * fluxUnit)
+#spectrum3.K.set_uninformative_prior(Log_uniform_prior)    
 
+spectrum3.piv = 4.2 * u.TeV
+spectrum3.piv.fix = True
 
-    spectrum3.index = -2.20
-    spectrum3.index.fix = False
-    spectrum3.index.bounds = (-4, 0)
-    #spectrum3.index.set_uninformative_prior(Uniform_prior)
-    
 
-    # Set spatial parameters (do it after the source definition to make sure
-    # the units are handled correctly)
-    shape3.lon0 = 307.65 * u.degree
-    shape3.lon0.fix = True
+spectrum3.index = -2.20
+spectrum3.index.fix = False
+spectrum3.index.bounds = (-4, 0)
+#spectrum3.index.set_uninformative_prior(Uniform_prior)
 
-    shape3.lat0 = 40.93 * u.degree
-    shape3.lat0.fix = True
 
-    shape3.sigma = 2.0 * u.degree
-    shape3.sigma.fix = True
-    #shape3.sigma.bound = (4 * u.degree, 0 * u.degree)
-    shape3.sigma.max_value = 2 * u.degree
-    #shape3.sigma.set_uninformative_prior(Uniform_prior)
+# Set spatial parameters (do it after the source definition to make sure
+# the units are handled correctly)
+shape3.lon0 = 307.65 * u.degree
+shape3.lon0.fix = True
 
+shape3.lat0 = 40.93 * u.degree
+shape3.lat0.fix = True
 
+shape3.sigma = 2.0 * u.degree
+shape3.sigma.fix = True
+#shape3.sigma.bound = (4 * u.degree, 0 * u.degree)
+shape3.sigma.max_value = 2 * u.degree
+#shape3.sigma.set_uninformative_prior(Uniform_prior)
 
 
-    spectrum2 = Powerlaw()
 
-    shape2    = Disk_on_sphere()
 
+spectrum2 = Powerlaw()
 
-    source2   = ExtendedSource("gammaCygni",
-                              spatial_shape=shape2,
-                              spectral_shape=spectrum2)
+shape2    = Disk_on_sphere()
 
-    fluxUnit = 1. / (u.TeV * u.cm**2 * u.s)
 
+source2   = ExtendedSource("gammaCygni",
+                          spatial_shape=shape2,
+                          spectral_shape=spectrum2)
 
-    # Set spectral parameters (do it after the source definition to make sure
-    # the units are handled correctly)
-    spectrum2.K = 1e-13 * fluxUnit
-    spectrum2.K.fix = False
-    spectrum2.K.bounds = (1e-16 * fluxUnit, 1e-10 * fluxUnit)
-    #spectrum2.K.set_uninformative_prior(Log_uniform_prior) 
+fluxUnit = 1. / (u.TeV * u.cm**2 * u.s)
 
-    spectrum2.piv = 1.1 * u.TeV
-    spectrum2.piv.fix = True
 
-    spectrum2.index = -2.95
-    spectrum2.index.fix = False
-    spectrum2.index.bounds = (-5., 0)
+# Set spectral parameters (do it after the source definition to make sure
+# the units are handled correctly)
+spectrum2.K = 1e-13 * fluxUnit
+spectrum2.K.fix = False
+spectrum2.K.bounds = (1e-16 * fluxUnit, 1e-10 * fluxUnit)
+#spectrum2.K.set_uninformative_prior(Log_uniform_prior) 
 
-    shape2.lon0 = 305.27 * u.degree
-    shape2.lon0.fix = True
+spectrum2.piv = 1.1 * u.TeV
+spectrum2.piv.fix = True
 
-    shape2.lat0 = 40.52 * u.degree
-    shape2.lat0.fix = True
+spectrum2.index = -2.95
+spectrum2.index.fix = False
+spectrum2.index.bounds = (-5., 0)
 
-    shape2.radius = 0.63 * u.degree
-    shape2.radius.fix = True
-    shape2.radius.max_value = 0.63 * u.degree
+shape2.lon0 = 305.27 * u.degree
+shape2.lon0.fix = True
 
-    lm = Model(source, source2, source3)
-    bin_list  =  "1c 1d 1e 1f 2c 2d 2e 2f 3c 3d 3e 3f 4c 4d 4e 4f 4g 5e 5f 5g 5h 6e 6f 6g 6h 7f 7g 7h 7i 8g 8h 8i 8j 9g 9h 9i 9j 9k 9l".split()
+shape2.lat0 = 40.52 * u.degree
+shape2.lat0.fix = True
 
+shape2.radius = 0.63 * u.degree
+shape2.radius.fix = True
+shape2.radius.max_value = 0.63 * u.degree
 
-    ra, dec = 307.17, 41.17
-    #data_radius = 6.0
-    model_radius = 8.0
+lm = Model(source, source2, source3)
+bin_list  =  "1c 1d 1e 1f 2c 2d 2e 2f 3c 3d 3e 3f 4c 4d 4e 4f 4g 5e 5f 5g 5h 6e 6f 6g 6h 7f 7g 7h 7i 8g 8h 8i 8j 9g 9h 9i 9j 9k 9l".split()
 
 
-    fits_roi = HealpixMapROI(ra = ra, dec = dec, model_radius=model_radius, roifile="roi_6aroundcocoon_nomasking.fits")
-    hawc = HAL("HAWC", args.mtfile, args.rsfile,fits_roi)
-    hawc.set_active_measurements(bin_list=bin_list)
-    #hawc.display()
+ra, dec = 307.17, 41.17
+#data_radius = 6.0
+model_radius = 8.0
 
-    # Double check the free parameters
-    print("Likelihood model:\n")
-    print(lm)
 
+fits_roi = HealpixMapROI(ra = ra, dec = dec, model_radius=model_radius, roifile="roi_6aroundcocoon_nomasking.fits")
+hawc = HAL("HAWC", maptree, response,fits_roi)
+hawc.set_active_measurements(bin_list=bin_list)
+#hawc.display()
 
-    # Set up the likelihood and run the fit
-    print("Performing likelihood fit...\n")
-    datalist = DataList(hawc)
-    jl = JointLikelihood(lm, datalist, verbose=True)
-    jl.set_minimizer("ROOT")
-    param_df, like_df = jl.fit()
+# Double check the free parameters
+print("Likelihood model:\n")
+print(lm)
 
-    # See the model in counts space and the residuals
-    #fig = hawc.display_spectrum()
-    # Save it to file
-    #fig.savefig("plots/cutoff_residuals_pwnfree_templateroi.png")
 
-    # Look at the different energy planes (the columns are model, data, residuals)
+# Set up the likelihood and run the fit
+print("Performing likelihood fit...\n")
+datalist = DataList(hawc)
+jl = JointLikelihood(lm, datalist, verbose=True)
+jl.set_minimizer("ROOT")
+param_df, like_df = jl.fit()
 
-  
-    TS = jl.compute_TS("veritasellipse", like_df)
-    print("TS:\n")
-    print(TS)
+# See the model in counts space and the residuals
+#fig = hawc.display_spectrum()
+# Save it to file
+#fig.savefig("plots/cutoff_residuals_pwnfree_templateroi.png")
 
-    TS = jl.compute_TS("HAWCcocoon", like_df)
-    print("TS:\n")
-    print(TS) 
+# Look at the different energy planes (the columns are model, data, residuals)
 
 
-    TS = jl.compute_TS("gammaCygni", like_df)
-    print("TS:\n")
-    print(TS)
+TS = jl.compute_TS("veritasellipse", like_df)
+print("TS:\n")
+print(TS)
 
+TS = jl.compute_TS("HAWCcocoon", like_df)
+print("TS:\n")
+print(TS) 
 
-    jl.get_errors()
-    jl.results.write_to("larger_roi.fits", overwrite=True)
-    lm.save("larger_roi.yml", overwrite=True)
 
+TS = jl.compute_TS("gammaCygni", like_df)
+print("TS:\n")
+print(TS)
 
-if __name__=="__main__":
 
-    import argparse
-
-    p = argparse.ArgumentParser(description="Example spectral fit with LiFF")
-    p.add_argument("-m", "--maptreefile", dest="mtfile",
-                   help="LiFF MapTree ROOT file", required=True)
-    p.add_argument("-r", "--responsefile", dest="rsfile",
-                   help="LiFF detector response ROOT file", required=True)
-    args = p.parse_args()
-
-    go(args)
-
+jl.get_errors()
+jl.results.write_to("larger_roi.fits", overwrite=True)
+lm.save("larger_roi.yml", overwrite=True)
