@@ -26,11 +26,11 @@ install_from_conda.sh
 From a clean shell, use `source ~/init_conda_hawc.sh` to activate the hawc_analysis enviroment 
 ----------------------------------------------------------------------------------
 1) Reproduce the fit results for the HAWC Cocoon:
-# After activating the hawc_analysis environment, run the 3ML script in the '3ML_fit' directory 
-python 3ml_fit.py -m maptree.root -r response.root
+# After activating the hawc_analysis environment, run the 3ML script in the '3ML_fit' directory. Data file (maptree.hd5) is healpx maps (NSIDE = 1024) of signal and expected background counts in bins of fHit and reconstructed energy with 1343 days of lifetime. response.hd5 is the HAWC detector response file. 
+python 3ml_fit.py 
 
 ----------------------------------------------------------------------------------
-2) Reproduce the fit results for the HAWC Cocoon:
+2) Reproduce the Significance maps:
 
 ----------------------------------------------------------------------------------
 3) Reproduce the hadronic distribution and leptonic distribution in Fig.2(left):
