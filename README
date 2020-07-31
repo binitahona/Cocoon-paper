@@ -34,20 +34,20 @@ python 3ml_fit.py
 #Significance maps are in the FITS format in the maps directory. To display the FITS files, a list of viewers is available at https://fits.gsfc.nasa.gov/fits_viewer.html
 ----------------------------------------------------------------------------------
 3) Reproduce the hadronic distribution and leptonic distribution in Fig.2(left):
-#Before running the python scripts in the hadronic directory, load the data file (maptree.hd5), the detector response file (response.hd5) and the region of interest file (roi.fits)
+#Before running the python scripts in the hadronic directory, load the data file(maptree.hd5), the detector response file (response.hd5) and the region of interest file (roi.fits) in the python scripts.
 # For the fit results of steady case scenario
 python hadronic/steady.py
 # For the fit results of burst case scenario
 python hadronic/burst.py 
 # Plotting expected gamma-ray distribution from the hadronic fit results
-# For the fit results of leptonic scenario
-python leptonic/electron_description.py
+# The parameters for the leptonic scenario are described in the file
+leptonic/electron_description.py
 
 ----------------------------------------------------------------------------------
 4) Reproduce the cosmic-ray profile plot in Fig.2(right), inside cr_profile directory:
 #Produce a model of the four rings centered at the OB2 association
 python ring.py
-#Using the model file obtained from ring.py, fit the rings and other sources using 3ML. Load data file (maptree.hd5), detector response file (response.hd5) and region of interest file (roi.fits).
+#Using the model file obtained from ring.py, fit the rings and other sources using 3ML. Load data file (maptree.hd5), detector response file (response.hd5) and region of interest file (roi.fits) in ring_model_fit.py script and then run
 python ring_model_fit.py
 # Obtain the integrated flux for each ring from the fits file saved from 3ml fit
 python flux.py
