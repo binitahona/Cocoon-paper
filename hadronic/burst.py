@@ -25,12 +25,12 @@ with warnings.catch_warnings():
 
     from threeML import *
 
-
+#Load data, detector response and roi
 maptree = ... # maptree.hdf5 file
 response = ... #  response.hdf5 file
 roi = ..#Region of interest, roi.fits file
 
-lm = load_model("cocoon.yml")
+lm = load_model("hadronic/cocoon.yml")
 
 
 fluxUnit = 1. / (u.TeV * u.cm**2 * u.s)
