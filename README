@@ -45,7 +45,8 @@ leptonic/electron_description.py
 
 ----------------------------------------------------------------------------------
 4) Reproduce the cosmic-ray profile plot in Fig.2(right), inside cr_profile directory:
-#Produce a model of the four rings centered at the OB2 association
+#Produce a model of the four rings centered at the OB2 association and save the yml file in the results directory
+mkdir results
 python ring.py
 #Using the model file obtained from ring.py, fit the rings and other sources using 3ML. Load data file (maptree.hd5), detector response file (response.hd5) and region of interest file (roi.fits) in ring_model_fit.py script and then run
 python ring_model_fit.py
