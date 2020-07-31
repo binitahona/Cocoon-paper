@@ -20,15 +20,11 @@ with warnings.catch_warnings():
 
     from threeML import *
 
-
-# Make sure that the HAWC plugin is available
-
-assert is_plugin_available("HAWCLike"), "HAWCLike is not available. Check your configuration"
-
+#Load the data and detector response
 maptree = "maptree.hd5"
 response = "response.hd5"
 
-
+#Spectral description
 spectrum = Cutoff_powerlaw()
 shape    = Gaussian_on_sphere()
 
@@ -192,5 +188,5 @@ print(TS)
 
 
 jl.get_errors()
-jl.results.write_to("results/hawc.fits", overwrite=True)
-lm.save("results/hawc.yml", overwrite=True)
+jl.results.write_to("hawc_3ml_fit.fits", overwrite=True)
+lm.save("hawc_3ml_fit.yml", overwrite=True)
