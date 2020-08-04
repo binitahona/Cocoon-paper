@@ -42,6 +42,8 @@ python hadronic/burst.py
 # Plotting expected gamma-ray distribution from the hadronic fit results
 # The parameters for the leptonic scenario are described in the file
 leptonic/electron_description.py
+#An example plotting script to plot the expected gamma-ray spectra from the hadronic models along with the Cocoon flux points
+python plot_spectra.py
 
 ----------------------------------------------------------------------------------
 4) Reproduce the cosmic-ray profile plot in Fig.2(right), inside cr_profile directory:

@@ -63,14 +63,6 @@ def go(args):
     labelnames=[] 
     
 
-    #plot_sampled_spectrum( "/data/scratch/userspace/bhona/paper/science/gp/proton/results/gp_proton_cutoff.fits", "red", ax, 0.1*u.GeV, 200*u.TeV, flux_unit, "cocoon_PP", 500 )
-    #labelnames.append("gamma ray spectrum from the proton fit, PLC")
-
-  
-    #plot_fitted_spectrum( "/data/scratch/userspace/bhona/paper/science/gp/results/gp.fits", "blue", ax, 700*u.GeV, 200*u.TeV, flux_unit, [ "HAWCcocoon" ] )
-    #labelnames.append("HAWC Cocoon spectrum, this study")
-
-
 
 #ARGO flux points from plotdigitizer
     x = np.array ([0.437, 0.686, 0.991, 1.54, 2.86, 6.6])
@@ -81,11 +73,6 @@ def go(args):
     yerr2 = y2 - y
     uplims = np.array([0, 0, 0, 0, 0, 2.32e-11])* 0.624151
     ax.errorbar(x, y, yerr=[yerr1,yerr2], uplims=uplims, fmt='s', color="k", label = "ARGO J2031+4157, 2014" )
-
-    #plot_model_spectrum( "FermiCocoon_FL8Y.yml", None, "cyan", ax, 0.001*u.TeV, 1*u.TeV, flux_unit, [] )
-    #labelnames.append("Preliminary LAT 8-year Point Source List (FL8Y)")
-
-
 
 
 
@@ -177,23 +164,6 @@ def go(args):
     print x * 1e3
     print y* 1e3
     ax.errorbar(x/1e9, y/1e9, color="grey", fmt="--", label = "Steady source scenario" )
-
-    ynew = s.evaluate(x, 1.81, 49e12, 0.00007)
-    y1 = ynew * x**2
-    print x * 1e3
-    print y* 1e3
-    #ax.errorbar(x/1e9, y1/1e9, color="red", label = "3ml fit Steady Source Scenario" )
-#model
-    #x1 = np.logspace(7.5, 17, 400)
-    #y1 = phi_gamma_burst_p(x1, k, Q_inj_index, E_inj_max)
-    #print y1
-    #y = phi_gamma_burst_p(x_Energy, t_burst, dt_burst, DiffCoeff_0, DiffCoeff_index, Q_inj_index, E_inj_max)
-    #ax.errorbar(x1/1e12, y1/1e12, color="black", label = "Ke's burst model" )  
-# gamma-ray flux in steady model
-    #y_Flux_steady = phi_gamma_steady_p(x_Energy, t_cocoon, DiffCoeff_0_steady, DiffCoeff_index_steady, Q_inj_index_steady, E_inj_max_steady)
-    #ax.errorbar(x_Energy/1e12, y_Flux_steady/1e12, color = "yellow", label = "cutoff=112TeV" )
-    #y1 = dN_dE_t0_p(x1, t0, Q_inj_index, E_inj_max)* x1**2
-    #ax.errorbar(x1/1e12, y1/1e12, color="red", label = "proton burst" )  
 
     plt.yscale("log")
     plt.xscale("log")
