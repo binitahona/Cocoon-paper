@@ -1,67 +1,19 @@
 #!/usr/bin/env python
 
-################################################################################
-# Demonstrate how to perform a maximum likelihood estimate of the normalization
-# of the flux from the Crab Nebula with LiFF + 3ML.
-# ------------------------------------------------------------------------------
-# The fit assumes a log parabolic spectrum with three parameters:
-#   - normalization log(A), in units of 1/(keV cm2 s)
-#   - spectral index gamma
-#   - curvature parameter beta
-#
-# Requires that 3ML be installed (https://threeml.stanford.edu/). The AERIE
-# environment must also be loaded.
-# ------------------------------------------------------------------------------
-################################################################################
-
 import numpy as np
 import matplotlib as mpl
 mpl.use("TkAgg")
 import matplotlib.pyplot as plt
 
 mpl.rc("font", family="serif", size=14)
-from threeML.io.progress_bar import progress_bar
-
-import warnings
-from astromodels.core.units import get_units
-from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
-import warnings
-import astropy.units as u
-import math 
-import scipy.integrate as integrate
-from scipy.integrate import quad
-
-try:
-    import ROOT
-    ROOT.PyConfig.IgnoreCommandLineOptions = True
-
-except:
     
-    pass
-
-# This disable momentarily the printing of warnings, which you might get
-# if you don't have the Fermi ST or other software installed
-with warnings.catch_warnings():
-
-    warnings.simplefilter("ignore")
+from burst_description import*
+from burst_function import*
+from steady_description import*
+from steady_function import*
     
-    from threeML import *
-    from burst_description import*
-    from burst_function import*
-    from steady_description import*
-    from steady_function import*
-    
-from spectral_plots import *
-def go(args):
+def go():
     fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-
-    fluxUnit = u.TeV  / ( u.cm**2 * u.s)
-    #E = np.logspace(np.log10(1), np.log10(100), 100) * u.TeV
-
-    flux_unit = "TeV/(cm2 s)"
-   
-    labelnames=[] 
-    
 
 
 #ARGO flux points from plotdigitizer
@@ -76,15 +28,13 @@ def go(args):
 
 
 
+
 #Data points from 2011 paper, Binita via slack.
     x = np.power(10, np.array( [9.14, 9.41, 9.65, 9.89, 10.26, 10.77]))/1e12
     y = np.power(10, np.array(  [-4.24832, -4.22174, -4.19497, -4.31060, -4.39871, -4.48776]) )*1e-12*1e6
     yerr = np.power( 10, np.array( [-4.13439, -4.10762, -4.13819, -4.19667, -4.31326, -4.34535])  )*1e-6 - y
     
-    #print x
-    #print y
     ax.errorbar(x, y, yerr=yerr, fmt='^', color="grey", label = "Fermi-LAT Cocoon, 2011" )
-    #labelnames.append("Published Fermi-LAT cocoon spectrum")
 
 
 #4FGL
@@ -165,6 +115,23 @@ def go(args):
     print y* 1e3
     ax.errorbar(x/1e9, y/1e9, color="grey", fmt="--", label = "Steady source scenario" )
 
+    ynew = s.evaluate(x, 1.81, 49e12, 0.00007)
+    y1 = ynew * x**2
+    print x * 1e3
+    print y* 1e3
+    #ax.errorbar(x/1e9, y1/1e9, color="red", label = "3ml fit Steady Source Scenario" )
+#model
+    #x1 = np.logspace(7.5, 17, 400)
+    #y1 = phi_gamma_burst_p(x1, k, Q_inj_index, E_inj_max)
+    #print y1
+    #y = phi_gamma_burst_p(x_Energy, t_burst, dt_burst, DiffCoeff_0, DiffCoeff_index, Q_inj_index, E_inj_max)
+    #ax.errorbar(x1/1e12, y1/1e12, color="black", label = "Ke's burst model" )  
+# gamma-ray flux in steady model
+    #y_Flux_steady = phi_gamma_steady_p(x_Energy, t_cocoon, DiffCoeff_0_steady, DiffCoeff_index_steady, Q_inj_index_steady, E_inj_max_steady)
+    #ax.errorbar(x_Energy/1e12, y_Flux_steady/1e12, color = "yellow", label = "cutoff=112TeV" )
+    #y1 = dN_dE_t0_p(x1, t0, Q_inj_index, E_inj_max)* x1**2
+    #ax.errorbar(x1/1e12, y1/1e12, color="red", label = "proton burst" )  
+
     plt.yscale("log")
     plt.xscale("log")
     ax.set_xlim(0.00001, 316)
@@ -172,16 +139,12 @@ def go(args):
 
     
     ax.set_xlabel("Energy [eV] ")
-    ax.set_ylabel("E^2 dN/(dE dA dt) [%s]" % flux_unit)
+    ax.set_ylabel("E^2 dN/(dE dA dt) [TeV/(cm2 s)]")
     #ax.set_title("Preliminary Cocoon (V)HE gamma-ray spectra")
     L=ax.legend(frameon=False)
-    for i, t in enumerate( labelnames ):
-      if i >= len( L.get_texts() ):
-        break
-      L.get_texts()[i].set_text(t)
     fig.tight_layout()
-    fig.savefig("%s/%s.pdf" % ( args.dir, args.name )  )
     fig.savefig("both_spectra.png"  )
+    fig.savefig("both_spectra.pdf"  )
 
 
 
@@ -189,13 +152,4 @@ def go(args):
 
 if __name__=="__main__":
 
-    import argparse
-    
-    p = argparse.ArgumentParser(description="Plot external spectra")
-    p.add_argument("--dir", dest="dir", default="./", help="Directory name")
-    p.add_argument("--name", dest="name", default="plot", help="Output name")
-    p.add_argument("--num_ene", dest="num_ene", default=20, type=int, help="Number of points at which the flux is evaluated" )
-
-    args = p.parse_args()
-
-    go(args)
+    go()
