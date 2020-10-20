@@ -52,5 +52,5 @@ print("TS:\n")
 print(TS) 
 
 
-raplot = llh.plot_radial_profile(307.65, 40.93, max_radius=2.3)
+raplot = jl.plot_radial_profile(307.65, 40.93, max_radius=2.3)
 raplot.savefig("pwn+cygni_subtracted.png")
