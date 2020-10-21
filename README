@@ -33,7 +33,7 @@ python 3ml_fit.py
 2) Reproduce the Significance maps:
 #Significance maps are in the FITS format in the maps directory. To display the FITS files, a list of viewers is available at https://fits.gsfc.nasa.gov/fits_viewer.html
 ----------------------------------------------------------------------------------
-3) Reproduce the hadronic distribution and leptonic distribution in Fig.2(left):
+3) Reproduce the hadronic and leptonic distribution:
 #Before running the python scripts in the hadronic directory, load the data file(maptree.hd5), the detector response file (response.hd5) and the region of interest file (roi.fits) in the python scripts.
 # For the fit results of steady case scenario
 python hadronic/steady.py
@@ -46,7 +46,7 @@ leptonic/electron_description.py
 python plot_spectra.py
 
 ----------------------------------------------------------------------------------
-4) Reproduce the cosmic-ray profile plot in Fig.2(right), inside cr_profile directory:
+4) Reproduce the cosmic-ray profile plot, inside cr_profile directory:
 #Produce a model of the four rings centered at the OB2 association and save the yml file in the results directory
 mkdir results
 python ring.py
@@ -54,7 +54,7 @@ python ring.py
 python ring_model_fit.py
 # Obtain the integrated flux for each ring from the fits file saved from 3ml fit
 python flux.py
-#Calculate cosmic-ray profile using eq 5 and plot Fig. 2
+#Calculate cosmic-ray profile using eq 5 and plot 
 python plot_cr_profile.py
 
 ----------------------------------------------------------------------------------
