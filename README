@@ -56,9 +56,18 @@ python ring_model_fit.py
 python flux.py
 #Calculate cosmic-ray profile using eq 5 and plot Fig. 2
 python plot_cr_profile.py
- 
+
 ----------------------------------------------------------------------------------
-5) Reproduce the systematic uncertainties for the Cocoon spectrum:
+5) Energy range and lower limit to the Cocoon cutoff:
+#Upper limit to the minimum energy range for the Cocoon
+python energy-range_lowerbound.py
+#Lower limit to the maximum energy range for the Cocoon
+python energy-range_upperbound.py
+#lower limit to the Cocoon cutoff energy
+python lower_limit_cocoon_cutoff.py
+
+----------------------------------------------------------------------------------
+6) Reproduce the systematic uncertainties for the Cocoon spectrum:
 # Systematic uncertainties due to detector effects
 # To load the different detector systematics results:
 python reload_results-from-fits.py
